@@ -55,7 +55,6 @@ class MainActivity : AppCompatActivity() {
             GlipWallet.signMessage(this, txToSign, object : GlipWallet.WalletSignMessageListener {
                 override fun onMessageSigned(signedMessage: String) {
                     binding.tvStatus.text = "Signed message\n${signedMessage}"
-
                 }
             })
         }

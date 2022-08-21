@@ -1,5 +1,6 @@
 package glip.gg.wallet
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -66,7 +67,6 @@ class WalletInteractionActivity : AppCompatActivity() {
 
         if (WALLET_ACTION_CALLBACKS.contains(host)) {
             actionCallback?.onWalletActionComplete(uri)
-            finish()
             return
         }
         if (host == ACTION_HOST) {
@@ -88,6 +88,15 @@ class WalletInteractionActivity : AppCompatActivity() {
         builder.setDefaultColorSchemeParams(defaultColors)
 
         val customTabsIntent: CustomTabsIntent = builder.build()
-        customTabsIntent.launchUrl(context, url)
+        customTabsIntent.intent.data = url
+        (context as AppCompatActivity).startActivityForResult(customTabsIntent.intent, 100)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == Activity.RESULT_CANCELED) {
+            Log.d(TAG, "canceled, finishing interaction")
+            finish()
+        }
     }
 }
