@@ -102,7 +102,7 @@ object GlipWallet {
         val url =
             "${BASE_URL}?action=showWallet"
         launchInteraction(context, url) { data ->
-           
+
         }
     }
 

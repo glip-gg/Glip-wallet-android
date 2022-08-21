@@ -83,6 +83,8 @@ class WalletInteractionActivity : AppCompatActivity() {
             .setToolbarColor(colorInt)
             .build()
 
+        builder.setUrlBarHidingEnabled(true)
+        builder.setShowTitle(true)
         builder.setDefaultColorSchemeParams(defaultColors)
 
         val customTabsIntent: CustomTabsIntent = builder.build()

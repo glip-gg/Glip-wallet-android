@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        binding.btnSendTx.setOnClickListener {
+        binding.btnSignMessage.setOnClickListener {
             val txToSign = "This is a message from Glip wallet android demo. Please sign this message"
             GlipWallet.signMessage(this, txToSign, object : GlipWallet.WalletSignMessageListener {
                 override fun onMessageSigned(signedMessage: String) {
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnShowWallet.setOnClickListener {
-
+            GlipWallet.showWallet(this)
         }
 
     }

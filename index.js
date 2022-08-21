@@ -29,7 +29,7 @@ async function checkWalletAction() {
             walletSignMessage(atob(params.message))
             break;
         case 'showWallet': 
-            showWalletUI()
+            showWalletUI();
             break;
     }
 }
