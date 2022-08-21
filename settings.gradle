@@ -7,4 +7,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Glip Wallet Android"
-include ':app'
+include ':demo'
+include ':wallet'
