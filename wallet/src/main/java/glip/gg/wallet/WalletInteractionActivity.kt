@@ -73,7 +73,6 @@ class WalletInteractionActivity : AppCompatActivity() {
             launchBrowser(this, uri)
             return
         }
-
     }
 
     private fun launchBrowser(context: Context, url: Uri) {

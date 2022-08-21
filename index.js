@@ -21,9 +21,12 @@ async function checkWalletAction() {
             walletLogout(params.provider)
             break;
         case 'signTx':
-            walletSignTx(params.txData)
+            // decode base64
+            walletSignTx(atob(params.txData))
             break;
         case 'signMessage':
+            // decode base64
+            walletSignMessage(atob(params.message))
             break;
     }
 }
@@ -54,11 +57,19 @@ async function walletLogout(provider) {
 }
 
 function walletSignTx(txData) {
-
+    console.log('signing tx', txData)
+    setMessage(`Signing transaction\n\n${txData}`)
+    setTimeout(() => {
+        onSignTx(btoa('Placeholder, signed transaction data will be here when implemented'))
+    }, 2000)
 }
 
-function walletSignMessage() {
-
+function walletSignMessage(message) {
+    console.log('signing message', message)
+    setMessage(`Signing message\n\n${message}`)
+    setTimeout(() => {
+        onSignMessage(btoa('Placeholder, signed message will be here when implemented'))
+    }, 2000)
 }
 
 
@@ -74,12 +85,18 @@ function onWalletLogout() {
     window.location = deeplink
 } 
 
-function onSignTx() {
-
+function onSignTx(signedTx) {
+     // base64 encoded signed tx
+     let deeplink = deeplinkHost + `walletTxSigned?signedTx=${signedTx}`
+     console.log('wallet signed tx: opening deeplink', deeplink)
+     window.location = deeplink
 }
 
-function onSignMessage() {
-
+function onSignMessage(signedMessage) {
+    // base64 encoded signed message
+    let deeplink = deeplinkHost + `walletMessageSigned?signedMessage=${signedMessage}`
+    console.log('wallet signed message: opening deeplink', deeplink)
+    window.location = deeplink
 }
 
 function setMessage(message) {

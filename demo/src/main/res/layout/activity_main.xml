@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Send ERC20 transfer tx"/>
+            android:text="Sign ERC20 transfer tx"/>
 
         <Button
             android:id="@+id/btn_sign_message"

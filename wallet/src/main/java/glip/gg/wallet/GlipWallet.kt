@@ -2,8 +2,8 @@ package glip.gg.wallet
 
 import android.content.Context
 import android.net.Uri
+import android.util.Base64
 import android.util.Log
-import java.util.*
 
 object GlipWallet {
 
@@ -23,10 +23,18 @@ object GlipWallet {
         fun onWalletLogout()
     }
 
+    interface WalletSignTransactionListener {
+        fun onTransactionSigned(signedTransaction: String)
+    }
+
+    interface WalletSignMessageListener {
+        fun onMessageSigned(signedMessage: String)
+    }
+
     fun init(clientId: String, chain: Chain, network: Network) {
         this.clientId = clientId
-        this.chain = chain.name.lowercase(Locale.getDefault())
-        this.network = network.name.lowercase(Locale.getDefault())
+        this.chain = chain.name.lowercase()
+        this.network = network.name.lowercase()
     }
 
     fun login(context: Context, provider: Provider, listener: WalletConnectedListener) {
@@ -50,11 +58,41 @@ object GlipWallet {
     fun logout(context: Context, provider: Provider, listener: WalletLogoutListener) {
         Log.d(TAG, "logout requested")
         val url =
-            "${BASE_URL}?action=logout?provider=${provider.name.lowercase()}"
+            "${BASE_URL}?action=logout&provider=${provider.name.lowercase()}"
         launchInteraction(context, url) { data ->
             Log.d(TAG, "logout data received: $data")
             if (data.host == "loggedOut") {
                 listener.onWalletLogout()
+            }
+        }
+    }
+
+    fun signMessage(context: Context, message: String, listener: WalletSignMessageListener) {
+        Log.d(TAG, "sign message requested")
+        val url =
+            "${BASE_URL}?action=signMessage&message=${message.encodeBase64()}"
+        launchInteraction(context, url) { data ->
+            Log.d(TAG, "sign message data received: $data")
+            if (data.host == "walletMessageSigned") {
+                val signedData = data.getQueryParameter("signedMessage")
+                if (signedData != null) {
+                    listener.onMessageSigned(signedData.decodeBase64())
+                }
+            }
+        }
+    }
+
+    fun signTransaction(context: Context, txData: String, listener: WalletSignTransactionListener) {
+        Log.d(TAG, "sign tx requested")
+        val url =
+            "${BASE_URL}?action=signTx&message=${txData.encodeBase64()}"
+        launchInteraction(context, url) { data ->
+            Log.d(TAG, "sign tx data received: $data")
+            if (data.host == "walletTxSigned") {
+                val signedData = data.getQueryParameter("signedTx")
+                if (signedData != null) {
+                    listener.onTransactionSigned(signedData.decodeBase64())
+                }
             }
         }
     }
@@ -68,6 +106,14 @@ object GlipWallet {
                     callback(data)
                 }
             })
+    }
+
+    private fun String.decodeBase64(): String {
+        return Base64.decode(this, Base64.DEFAULT).toString(charset("UTF-8"))
+    }
+
+    private fun String.encodeBase64(): String {
+        return Base64.encodeToString(this.toByteArray(charset("UTF-8")), Base64.DEFAULT)
     }
 
 }

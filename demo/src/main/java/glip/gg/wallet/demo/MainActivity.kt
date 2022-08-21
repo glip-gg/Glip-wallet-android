@@ -40,5 +40,25 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
+        binding.btnSendTx.setOnClickListener {
+            val txToSign = "{'from': '0x0', 'data': '0x0'}"
+            GlipWallet.signTransaction(this, txToSign, object : GlipWallet.WalletSignTransactionListener {
+                override fun onTransactionSigned(signedTransaction: String) {
+                    binding.tvStatus.text = "Signed transaction\n${signedTransaction}"
+
+                }
+            })
+        }
+
+        binding.btnSendTx.setOnClickListener {
+            val txToSign = "This is a message from Glip wallet android demo. Please sign this message"
+            GlipWallet.signMessage(this, txToSign, object : GlipWallet.WalletSignMessageListener {
+                override fun onMessageSigned(signedMessage: String) {
+                    binding.tvStatus.text = "Signed message\n${signedMessage}"
+
+                }
+            })
+        }
+
     }
 }
