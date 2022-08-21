@@ -2,4 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="glip.gg.wallet">
 
+    <application>
+        <activity
+            android:launchMode="singleTop"
+            android:name=".WalletInteractionActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="glipwallet" />
+            </intent-filter>
+        </activity>
+    </application>
 </manifest>
