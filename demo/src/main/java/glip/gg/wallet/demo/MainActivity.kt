@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnConnectWallet.setOnClickListener {
             GlipWallet.login(this, Provider.GOOGLE, object : GlipWallet.WalletConnectedListener {
                 override fun onWalletConnected(walletId: String, userInfo: String) {
-                    Toast.makeText(this@MainActivity, "Wallet connected: $walletId", Toast.LENGTH_SHORT).show()
+                    binding.tvStatus.text = "Wallet connected: wallet_id:  $walletId\nUser info: $userInfo"
                 }
             })
         }

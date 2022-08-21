@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
@@ -16,6 +17,8 @@ class WalletInteractionActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val TAG = "GlipWallet"
+
         private var actionCallback: WalletActionCallback? = null
 
         private const val URL = "url"
@@ -27,6 +30,8 @@ class WalletInteractionActivity : AppCompatActivity() {
         private val WALLET_ACTIONS = arrayOf(
             "login", "signTx", "signMessage"
         )
+
+        private val ACTION_HOST = "glip-gg.github.io"
 
         fun launch(context: Context, url: String, actionCallback: WalletActionCallback) {
             this.actionCallback = actionCallback
@@ -53,12 +58,18 @@ class WalletInteractionActivity : AppCompatActivity() {
 
     private fun handleIntentData(uri: Uri?) {
         if (uri == null) return
+        Log.d(TAG, uri.toString())
+
         val host = uri.host
+
+        Log.d(TAG, "Host: $host")
+
         if (WALLET_ACTION_CALLBACKS.contains(host)) {
             actionCallback?.onWalletActionComplete(uri)
+            finish()
             return
         }
-        if (WALLET_ACTIONS.contains(host)) {
+        if (host == ACTION_HOST) {
             launchBrowser(this, uri)
             return
         }

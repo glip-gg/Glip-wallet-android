@@ -36,7 +36,7 @@ async function walletLogin(clientId, chain, network, provider) {
     if (await window.croakWallet.isConnected()) {
         let walletId = await window.croakWallet.getWalletID()
         let userInfo = await window.croakWallet.getUserInfo();
-        onWalletLogin(walletId, userInfo)
+        onWalletLogin(walletId, JSON.stringify(userInfo))
     } else {
         window.croakWallet.login(provider, window.location.href)
     }

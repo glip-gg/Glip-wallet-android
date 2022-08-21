@@ -3,16 +3,17 @@ package glip.gg.wallet
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import java.util.*
 
 object GlipWallet {
 
     private const val TAG = "GlipWallet"
 
     private lateinit var clientId: String
-    private lateinit var chain: Chain
-    private lateinit var network: Network
+    private lateinit var chain: String
+    private lateinit var network: String
 
-    private const val BASE_URL = "https://glip-gg.github.io/glip-wallet-android"
+    private const val BASE_URL = "https://glip-gg.github.io/Glip-wallet-android/"
 
     interface WalletConnectedListener {
         fun onWalletConnected(walletId: String, userInfo: String)
@@ -20,17 +21,17 @@ object GlipWallet {
 
     fun init(clientId: String, chain: Chain, network: Network) {
         this.clientId = clientId
-        this.chain = chain
-        this.network = network
+        this.chain = chain.name.lowercase(Locale.getDefault())
+        this.network = network.name.lowercase(Locale.getDefault())
     }
 
     fun login(context: Context, provider: Provider, listener: WalletConnectedListener) {
         Log.d(TAG, "login requested")
         val url =
-            "${BASE_URL}?action=login&chain=$chain&network=$network&clientId=$clientId&provider=$provider"
+            "${BASE_URL}?action=login&chain=$chain&network=$network&clientId=$clientId&provider=${provider.name.lowercase()}"
         launchInteraction(context, url) { data ->
             Log.d(TAG, "login data received: $data")
-            if (data.host == "login") {
+            if (data.host == "walletConnected") {
                 val walletId = data.getQueryParameter("walletId")
                 val userInfo = data.getQueryParameter("userInfo")
                 Log.d(TAG, "walletId: $walletId")

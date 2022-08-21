@@ -2,17 +2,75 @@
 <head>
     <meta charset="utf-8">
     <title>Glip Wallet</title>
-    <link rel="stylesheet" href="index.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+          box-sizing: border-box;
+        }
+        
+        html, body {
+          font-family: 'Chakra Petch', sans-serif;
+          color: white;
+          background: #1c1c1c;
+          text-align: center;
+          align-items: center;
+          vertical-align: auto;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          display: table
+        }
+
+        #content {
+          display: table-cell;
+          text-align: center;
+          vertical-align: middle;
+        }
+
+        .loading {
+            width:50px;
+            height:50px;
+            --c:radial-gradient(farthest-side,#ffffff 92%,#0000);
+            background: 
+            var(--c) 50% 0,
+            var(--c) 50% 100%,
+            var(--c) 100% 50%,
+            var(--c) 0    50%;
+            background-size:12px 12px;
+            background-repeat:no-repeat;
+            animation:s7 1s infinite;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            align-self: center;
+      }
+      @keyframes s7 {to{transform: rotate(.5turn)}}
+
+        @keyframes loading {
+        0% {
+        transform:translateX(0)
+        }
+        to {
+        transform:translateX(400%)
+        }
+        }
+
+    </style>
 </head>
 
-<body style="text-align: center;">
-    <h4>Glip Wallet</h4>
-    <p id="message">Loading...</p>
+
+<body>
+    <div id='content'>
+        <div class="loading"></div>
+        <h2 style="margin-top: 40px;">Glip Wallet</h2>
+        <p id="message">Loading...</p>
+    </div>
+   
 </body>
 
 <script type="module" src="./index.js"></script>
