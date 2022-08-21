@@ -32,5 +32,13 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
+        binding.btnLogout.setOnClickListener {
+            GlipWallet.logout(this, Provider.GOOGLE, object : GlipWallet.WalletLogoutListener {
+                override fun onWalletLogout() {
+                    binding.tvStatus.text = "Logout success"
+                }
+            })
+        }
+
     }
 }

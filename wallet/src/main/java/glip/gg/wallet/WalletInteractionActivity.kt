@@ -24,11 +24,11 @@ class WalletInteractionActivity : AppCompatActivity() {
         private const val URL = "url"
 
         private  val WALLET_ACTION_CALLBACKS = arrayOf(
-            "walletConnected", "walletTxSigned", "walletMessageSigned"
+            "walletConnected", "walletTxSigned", "walletMessageSigned", "loggedOut"
         )
 
         private val WALLET_ACTIONS = arrayOf(
-            "login", "signTx", "signMessage"
+            "login", "signTx", "signMessage", "logout"
         )
 
         private val ACTION_HOST = "glip-gg.github.io"

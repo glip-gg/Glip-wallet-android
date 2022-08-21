@@ -17,7 +17,11 @@ async function checkWalletAction() {
         case 'login':
             walletLogin(params.clientId, params.chain, params.network, params.provider)
             break;
+        case 'logout':
+            walletLogout(params.provider)
+            break;
         case 'signTx':
+            walletSignTx(params.txData)
             break;
         case 'signMessage':
             break;
@@ -40,10 +44,16 @@ async function walletLogin(clientId, chain, network, provider) {
     } else {
         window.croakWallet.login(provider, window.location.href)
     }
-
 }
 
-function walletSignTx() {
+async function walletLogout(provider) {
+    console.log('wallet logout', provider)
+    setMessage('Logging out..')
+    await window.croakWallet.logout(provider)
+    onWalletLogout()
+}
+
+function walletSignTx(txData) {
 
 }
 
@@ -56,8 +66,13 @@ function onWalletLogin(walletId, userInfo) {
     let deeplink = deeplinkHost + `walletConnected?walletId=${walletId}&userInfo=${userInfo}`
     console.log('wallet connected: opening deeplink', deeplink)
     window.location = deeplink
-
 }   
+
+function onWalletLogout() {
+    let deeplink = deeplinkHost + `loggedOut`
+    console.log('wallet logged out: opening deeplink', deeplink)
+    window.location = deeplink
+} 
 
 function onSignTx() {
 

@@ -19,6 +19,10 @@ object GlipWallet {
         fun onWalletConnected(walletId: String, userInfo: String)
     }
 
+    interface WalletLogoutListener {
+        fun onWalletLogout()
+    }
+
     fun init(clientId: String, chain: Chain, network: Network) {
         this.clientId = clientId
         this.chain = chain.name.lowercase(Locale.getDefault())
@@ -41,15 +45,29 @@ object GlipWallet {
                 }
             }
         }
+    }
 
+    fun logout(context: Context, provider: Provider, listener: WalletLogoutListener) {
+        Log.d(TAG, "logout requested")
+        val url =
+            "${BASE_URL}?action=logout?provider=${provider.name.lowercase()}"
+        launchInteraction(context, url) { data ->
+            Log.d(TAG, "logout data received: $data")
+            if (data.host == "loggedOut") {
+                listener.onWalletLogout()
+            }
+        }
     }
 
     private fun launchInteraction(context: Context, url: String, callback: ((data: Uri) -> Unit)) {
-        WalletInteractionActivity.launch(context, url, object : WalletInteractionActivity.WalletActionCallback {
-            override fun onWalletActionComplete(data: Uri) {
-                callback(data)
-            }
-        })
+        WalletInteractionActivity.launch(
+            context,
+            url,
+            object : WalletInteractionActivity.WalletActionCallback {
+                override fun onWalletActionComplete(data: Uri) {
+                    callback(data)
+                }
+            })
     }
 
 }
