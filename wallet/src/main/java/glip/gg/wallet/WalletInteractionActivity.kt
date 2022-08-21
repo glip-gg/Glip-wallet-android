@@ -28,7 +28,7 @@ class WalletInteractionActivity : AppCompatActivity() {
         )
 
         private val WALLET_ACTIONS = arrayOf(
-            "login", "signTx", "signMessage", "logout"
+            "login", "signTx", "signMessage", "logout", "showWallet"
         )
 
         private val ACTION_HOST = "glip-gg.github.io"

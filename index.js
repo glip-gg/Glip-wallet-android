@@ -28,6 +28,9 @@ async function checkWalletAction() {
             // decode base64
             walletSignMessage(atob(params.message))
             break;
+        case 'showWallet': 
+            showWalletUI()
+            break;
     }
 }
 
@@ -72,6 +75,10 @@ function walletSignMessage(message) {
     }, 2000)
 }
 
+function showWalletUI() {
+    console.log('showing wallet ui')
+    setMessage(`Wallet UI will be shown here when implemented`)
+}
 
 function onWalletLogin(walletId, userInfo) {
     let deeplink = deeplinkHost + `walletConnected?walletId=${walletId}&userInfo=${userInfo}`

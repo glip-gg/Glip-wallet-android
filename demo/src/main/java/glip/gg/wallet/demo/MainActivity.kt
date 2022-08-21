@@ -60,5 +60,9 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
+        binding.btnShowWallet.setOnClickListener {
+
+        }
+
     }
 }

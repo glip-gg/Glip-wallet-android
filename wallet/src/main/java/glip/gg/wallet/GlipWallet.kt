@@ -97,6 +97,15 @@ object GlipWallet {
         }
     }
 
+    fun showWallet(context: Context) {
+        Log.d(TAG, "show wallet requested")
+        val url =
+            "${BASE_URL}?action=showWallet"
+        launchInteraction(context, url) { data ->
+           
+        }
+    }
+
     private fun launchInteraction(context: Context, url: String, callback: ((data: Uri) -> Unit)) {
         WalletInteractionActivity.launch(
             context,

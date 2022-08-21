@@ -34,6 +34,13 @@
             android:text="Sign message"/>
 
         <Button
+            android:id="@+id/btn_show_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Show wallet"/>
+
+        <Button
             android:id="@+id/btn_logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
