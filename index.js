@@ -37,25 +37,25 @@ async function checkWalletAction() {
 async function walletLogin(clientId, chain, network, provider) {
     console.log('wallet login', chain, network)
     setMessage('Logging in..')
-    await window.croakWallet.init({
+    await window.glipWalletGlobal.init({
         'clientId': clientId,
         chain: chain,
         authNetwork: network
       }
     );
-    if (await window.croakWallet.isConnected()) {
-        let walletId = await window.croakWallet.getWalletID()
-        let userInfo = await window.croakWallet.getUserInfo();
+    if (await window.glipWalletGlobal.isConnected()) {
+        let walletId = await window.glipWalletGlobal.getWalletID()
+        let userInfo = await window.glipWalletGlobal.getUserInfo();
         onWalletLogin(walletId, JSON.stringify(userInfo))
     } else {
-        window.croakWallet.login(provider, window.location.href)
+        window.glipWalletGlobal.login(provider, window.location.href)
     }
 }
 
 async function walletLogout(provider) {
     console.log('wallet logout', provider)
     setMessage('Logging out..')
-    await window.croakWallet.logout(provider)
+    await window.glipWalletGlobal.logout(provider)
     onWalletLogout()
 }
 
