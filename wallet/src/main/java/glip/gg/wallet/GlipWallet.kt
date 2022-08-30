@@ -85,7 +85,7 @@ object GlipWallet {
     fun signTransaction(context: Context, txData: String, listener: WalletSignTransactionListener) {
         Log.d(TAG, "sign tx requested")
         val url =
-            "${BASE_URL}?action=signTx&message=${txData.encodeBase64()}"
+            "${BASE_URL}?action=signTx&txData=${txData.encodeBase64()}"
         launchInteraction(context, url) { data ->
             Log.d(TAG, "sign tx data received: $data")
             if (data.host == "walletTxSigned") {
