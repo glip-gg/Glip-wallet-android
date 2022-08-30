@@ -43,7 +43,7 @@ async function walletLogin(clientId, chain, network, provider) {
         authNetwork: network
       }
     );
-    if (await window.glipWalletGlobal.isConnected()) {
+    if (await window.glipWalletSDK.isConnected()) {
         let walletId = await window.glipWalletSDK.getWalletID()
         let userInfo = await window.glipWalletSDK.getUserInfo();
         onWalletLogin(walletId, JSON.stringify(userInfo))
