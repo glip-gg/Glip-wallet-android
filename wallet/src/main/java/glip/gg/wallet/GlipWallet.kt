@@ -1,9 +1,11 @@
 package glip.gg.wallet
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
+import androidx.core.content.edit
 
 object GlipWallet {
 
@@ -12,6 +14,11 @@ object GlipWallet {
     private lateinit var clientId: String
     private lateinit var chain: String
     private lateinit var network: String
+
+    private lateinit var preferences: SharedPreferences
+
+    private const val PREF_WALLET_CONNECTED = "glip_wallet_connected"
+    private const val PREF_USER_INFO = "glip_wallet_user_info"
 
     private const val BASE_URL = "https://glip-gg.github.io/Glip-wallet-android/"
 
@@ -31,10 +38,11 @@ object GlipWallet {
         fun onMessageSigned(signedMessage: String)
     }
 
-    fun init(clientId: String, chain: Chain, network: Network) {
+    fun init(context: Context, clientId: String, chain: Chain, network: Network) {
         this.clientId = clientId
         this.chain = chain.name.lowercase()
         this.network = network.name.lowercase()
+        preferences = context.getSharedPreferences("glip.gg.wallet", Context.MODE_PRIVATE)
     }
 
     fun login(context: Context, provider: Provider, listener: WalletConnectedListener) {
@@ -49,6 +57,10 @@ object GlipWallet {
                 Log.d(TAG, "walletId: $walletId")
                 Log.d(TAG, "userInfo: $userInfo")
                 if (walletId != null && userInfo != null) {
+                    preferences.edit {
+                        putBoolean(PREF_WALLET_CONNECTED, true)
+                        putString(PREF_USER_INFO, userInfo)
+                    }
                     listener.onWalletConnected(walletId, userInfo)
                 }
             }
@@ -62,6 +74,10 @@ object GlipWallet {
         launchInteraction(context, url) { data ->
             Log.d(TAG, "logout data received: $data")
             if (data.host == "loggedOut") {
+                preferences.edit {
+                    putBoolean(PREF_WALLET_CONNECTED, false)
+                    putString(PREF_USER_INFO, null)
+                }
                 listener.onWalletLogout()
             }
         }
@@ -105,6 +121,9 @@ object GlipWallet {
 
         }
     }
+
+    fun isConnected() = preferences.getBoolean(PREF_WALLET_CONNECTED, false)
+    fun getUserInfo() = preferences.getString(PREF_USER_INFO, null)
 
     private fun launchInteraction(context: Context, url: String, callback: ((data: Uri) -> Unit)) {
         WalletInteractionActivity.launch(
