@@ -38,7 +38,7 @@ async function walletLogin(clientId, chain, network, provider) {
     console.log('wallet login', chain, network)
     setMessage('Logging in..')
     await window.glipWalletSDK.init({
-        'clientId': clientId,
+        'clientIdentifier': clientId,
         chain: chain,
         authNetwork: network
       }
