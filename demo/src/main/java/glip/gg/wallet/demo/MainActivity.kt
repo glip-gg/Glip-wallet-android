@@ -3,10 +3,7 @@ package glip.gg.wallet.demo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import glip.gg.wallet.Chain
-import glip.gg.wallet.GlipWallet
-import glip.gg.wallet.Network
-import glip.gg.wallet.Provider
+import glip.gg.wallet.*
 import glip.gg.wallet.demo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -26,8 +23,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnConnectWallet.setOnClickListener {
             GlipWallet.login(this, Provider.GOOGLE, object : GlipWallet.WalletConnectedListener {
-                override fun onWalletConnected(walletId: String, userInfo: String) {
-                    binding.tvStatus.text = "Wallet connected: wallet_id:  $walletId\nUser info: $userInfo"
+                override fun onWalletConnected(walletId: String, userInfo: WalletUserInfo?) {
+                    binding.tvStatus.text = "Wallet connected: wallet_id:  $walletId\nUser info: ${userInfo?.toString()}"
                 }
             })
         }

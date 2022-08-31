@@ -6,6 +6,8 @@ import android.net.Uri
 import android.util.Base64
 import android.util.Log
 import androidx.core.content.edit
+import org.json.JSONObject
+import java.lang.Exception
 
 object GlipWallet {
 
@@ -23,7 +25,7 @@ object GlipWallet {
     private const val BASE_URL = "https://glip-gg.github.io/Glip-wallet-android/"
 
     interface WalletConnectedListener {
-        fun onWalletConnected(walletId: String, userInfo: String)
+        fun onWalletConnected(walletId: String, userInfo: WalletUserInfo?)
     }
 
     interface WalletLogoutListener {
@@ -61,7 +63,7 @@ object GlipWallet {
                         putBoolean(PREF_WALLET_CONNECTED, true)
                         putString(PREF_USER_INFO, userInfo)
                     }
-                    listener.onWalletConnected(walletId, userInfo)
+                    listener.onWalletConnected(walletId, serializeUserInfo(userInfo))
                 }
             }
         }
@@ -123,7 +125,7 @@ object GlipWallet {
     }
 
     fun isConnected() = preferences.getBoolean(PREF_WALLET_CONNECTED, false)
-    fun getUserInfo() = preferences.getString(PREF_USER_INFO, null)
+    fun getUserInfo() = serializeUserInfo(preferences.getString(PREF_USER_INFO, null))
 
     private fun launchInteraction(context: Context, url: String, callback: ((data: Uri) -> Unit)) {
         WalletInteractionActivity.launch(
@@ -142,6 +144,22 @@ object GlipWallet {
 
     private fun String.encodeBase64(): String {
         return Base64.encodeToString(this.toByteArray(charset("UTF-8")), Base64.DEFAULT)
+    }
+
+    private fun serializeUserInfo(userInfo: String?): WalletUserInfo? {
+        if (userInfo == null) return null
+        try {
+            val jsonUserInfo = JSONObject(userInfo)
+            return WalletUserInfo(
+                jsonUserInfo.optString("email"),
+                jsonUserInfo.optString("name"),
+                jsonUserInfo.optString("profileImage"),
+                jsonUserInfo.optString("publicAddress")
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
     }
 
 }
