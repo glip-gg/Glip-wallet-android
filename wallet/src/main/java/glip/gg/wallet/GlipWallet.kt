@@ -44,10 +44,11 @@ object GlipWallet {
         fun onCancelled()
     }
 
-    fun init(context: Context, clientId: String, chain: Chain, network: Network) {
+    fun init(context: Context, clientId: String, chain: Chain) {
         this.clientId = clientId
         this.chain = chain.name.lowercase()
-        this.network = network.name.lowercase()
+        this.network = "cyan"
+
         preferences = context.getSharedPreferences("glip.gg.wallet", Context.MODE_PRIVATE)
     }
 
