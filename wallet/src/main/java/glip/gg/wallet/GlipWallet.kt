@@ -6,6 +6,7 @@ import android.net.Uri
 import android.util.Base64
 import android.util.Log
 import androidx.core.content.edit
+import glip.gg.wallet.GlipWallet.decodeBase64
 import org.json.JSONObject
 import java.lang.Exception
 
@@ -22,10 +23,11 @@ object GlipWallet {
     private const val PREF_WALLET_CONNECTED = "glip_wallet_connected"
     private const val PREF_USER_INFO = "glip_wallet_user_info"
 
-    private const val BASE_URL = "https://glip-gg.github.io/Glip-wallet-android/"
+    private const val BASE_URL = "https://glip.gg/wallet-android/"
 
     interface WalletConnectedListener {
         fun onWalletConnected(walletId: String, userInfo: WalletUserInfo?)
+        fun onCancelled()
     }
 
     interface WalletLogoutListener {
@@ -34,10 +36,12 @@ object GlipWallet {
 
     interface WalletSignTransactionListener {
         fun onTransactionSigned(signedTransaction: String)
+        fun onCancelled()
     }
 
     interface WalletSignMessageListener {
         fun onMessageSigned(signedMessage: String)
+        fun onCancelled()
     }
 
     fun init(context: Context, clientId: String, chain: Chain, network: Network) {
@@ -51,7 +55,7 @@ object GlipWallet {
         Log.d(TAG, "login requested")
         val url =
             "${BASE_URL}?action=login&chain=$chain&network=$network&clientId=$clientId&provider=${provider.name.lowercase()}"
-        launchInteraction(context, url) { data ->
+        launchInteraction(context, url, { data ->
             Log.d(TAG, "login data received: $data")
             if (data.host == "walletConnected") {
                 val walletId = data.getQueryParameter("walletId")
@@ -66,14 +70,16 @@ object GlipWallet {
                     listener.onWalletConnected(walletId, serializeUserInfo(userInfo))
                 }
             }
-        }
+        }, {
+            listener.onCancelled()
+        })
     }
 
     fun logout(context: Context, provider: Provider, listener: WalletLogoutListener) {
         Log.d(TAG, "logout requested")
         val url =
             "${BASE_URL}?action=logout&provider=${provider.name.lowercase()}"
-        launchInteraction(context, url) { data ->
+        launchInteraction(context, url, { data ->
             Log.d(TAG, "logout data received: $data")
             if (data.host == "loggedOut") {
                 preferences.edit {
@@ -82,14 +88,16 @@ object GlipWallet {
                 }
                 listener.onWalletLogout()
             }
-        }
+        }, {
+
+        })
     }
 
     fun signMessage(context: Context, message: String, listener: WalletSignMessageListener) {
         Log.d(TAG, "sign message requested")
         val url =
             "${BASE_URL}?action=signMessage&message=${message.encodeBase64()}"
-        launchInteraction(context, url) { data ->
+        launchInteraction(context, url, { data ->
             Log.d(TAG, "sign message data received: $data")
             if (data.host == "walletMessageSigned") {
                 val signedData = data.getQueryParameter("signedMessage")
@@ -97,14 +105,16 @@ object GlipWallet {
                     listener.onMessageSigned(signedData.decodeBase64())
                 }
             }
-        }
+        }, {
+            listener.onCancelled()
+        })
     }
 
     fun signTransaction(context: Context, txData: String, listener: WalletSignTransactionListener) {
         Log.d(TAG, "sign tx requested")
         val url =
             "${BASE_URL}?action=signTx&txData=${txData.encodeBase64()}"
-        launchInteraction(context, url) { data ->
+        launchInteraction(context, url, { data ->
             Log.d(TAG, "sign tx data received: $data")
             if (data.host == "walletTxSigned") {
                 val signedData = data.getQueryParameter("signedTx")
@@ -112,28 +122,32 @@ object GlipWallet {
                     listener.onTransactionSigned(signedData.decodeBase64())
                 }
             }
-        }
+        }, {
+            listener.onCancelled()
+        })
     }
 
     fun showWallet(context: Context) {
         Log.d(TAG, "show wallet requested")
         val url =
             "${BASE_URL}?action=showWallet"
-        launchInteraction(context, url) { data ->
-
-        }
+        launchInteraction(context, url, {}, {})
     }
 
     fun isConnected() = preferences.getBoolean(PREF_WALLET_CONNECTED, false)
     fun getUserInfo() = serializeUserInfo(preferences.getString(PREF_USER_INFO, null))
 
-    private fun launchInteraction(context: Context, url: String, callback: ((data: Uri) -> Unit)) {
+    private fun launchInteraction(context: Context, url: String, callback: ((data: Uri) -> Unit), cancelCallback: () -> Unit) {
         WalletInteractionActivity.launch(
             context,
             url,
             object : WalletInteractionActivity.WalletActionCallback {
                 override fun onWalletActionComplete(data: Uri) {
                     callback(data)
+                }
+
+                override fun onWalletActionCancelled() {
+                    cancelCallback()
                 }
             })
     }

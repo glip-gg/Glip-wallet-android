@@ -26,6 +26,10 @@ class MainActivity : AppCompatActivity() {
                 override fun onWalletConnected(walletId: String, userInfo: WalletUserInfo?) {
                     binding.tvStatus.text = "Wallet connected: wallet_id:  $walletId\nUser info: ${userInfo?.toString()}"
                 }
+
+                override fun onCancelled() {
+
+                }
             })
         }
 
@@ -42,6 +46,9 @@ class MainActivity : AppCompatActivity() {
             GlipWallet.signTransaction(this, txToSign, object : GlipWallet.WalletSignTransactionListener {
                 override fun onTransactionSigned(signedTransaction: String) {
                     binding.tvStatus.text = "Signed transaction\n${signedTransaction}"
+                }
+
+                override fun onCancelled() {
 
                 }
             })
@@ -52,6 +59,10 @@ class MainActivity : AppCompatActivity() {
             GlipWallet.signMessage(this, txToSign, object : GlipWallet.WalletSignMessageListener {
                 override fun onMessageSigned(signedMessage: String) {
                     binding.tvStatus.text = "Signed message\n${signedMessage}"
+                }
+
+                override fun onCancelled() {
+
                 }
             })
         }

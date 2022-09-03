@@ -15,6 +15,7 @@ class WalletInteractionActivity : AppCompatActivity() {
 
     interface WalletActionCallback {
         fun onWalletActionComplete(data: Uri)
+        fun onWalletActionCancelled()
     }
 
     companion object {
@@ -96,6 +97,7 @@ class WalletInteractionActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == Activity.RESULT_CANCELED) {
             Log.d(TAG, "canceled, finishing interaction")
+            actionCallback?.onWalletActionCancelled()
             finish()
         }
     }
