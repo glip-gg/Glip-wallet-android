@@ -33,7 +33,7 @@ class WalletInteractionActivity : AppCompatActivity() {
             "login", "signTx", "signMessage", "logout", "showWallet"
         )
 
-        private val ACTION_HOST = "glip-gg.github.io"
+        private val ACTION_HOST = "glip.gg"
 
         fun launch(context: Context, url: String, actionCallback: WalletActionCallback) {
             this.actionCallback = actionCallback
