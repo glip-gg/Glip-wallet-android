@@ -24,6 +24,7 @@ object GlipWallet {
     private const val PREF_USER_INFO = "glip_wallet_user_info"
 
     private const val BASE_URL = "https://glip.gg/wallet-android/"
+    private const val WALLET_HOST_URL = "https://glip.gg/wallet-host/"
 
     interface WalletConnectedListener {
         fun onWalletConnected(walletId: String, userInfo: WalletUserInfo?)
@@ -130,9 +131,7 @@ object GlipWallet {
 
     fun showWallet(context: Context) {
         Log.d(TAG, "show wallet requested")
-        val url =
-            "${BASE_URL}?action=showWallet"
-        launchInteraction(context, url, {}, {})
+        launchInteraction(context, WALLET_HOST_URL, {}, {})
     }
 
     fun isConnected() = preferences.getBoolean(PREF_WALLET_CONNECTED, false)
