@@ -76,8 +76,7 @@ function walletSignMessage(message) {
 }
 
 function showWalletUI() {
-    console.log('showing wallet ui')
-    setMessage(`Wallet UI will be shown here when implemented`)
+    window.location.replace('https://glip.gg/wallet-host')
 }
 
 function onWalletLogin(walletId, userInfo) {
