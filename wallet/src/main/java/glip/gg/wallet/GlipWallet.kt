@@ -176,4 +176,11 @@ object GlipWallet {
         }
     }
 
+    fun internalLogout(context: Context) {
+        context.getSharedPreferences("glip.gg.wallet", Context.MODE_PRIVATE).edit {
+            putBoolean(PREF_WALLET_CONNECTED, false)
+            putString(PREF_WALLET_CONNECTED, null)
+        }
+    }
+
 }
