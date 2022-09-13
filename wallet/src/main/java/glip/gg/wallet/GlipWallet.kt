@@ -9,6 +9,13 @@ import androidx.core.content.edit
 import glip.gg.wallet.GlipWallet.decodeBase64
 import org.json.JSONObject
 import java.lang.Exception
+import android.os.Bundle
+
+import android.content.pm.PackageManager
+
+import android.content.pm.ApplicationInfo
+import java.lang.IllegalArgumentException
+
 
 object GlipWallet {
 
@@ -17,6 +24,7 @@ object GlipWallet {
     private lateinit var clientId: String
     private lateinit var chain: String
     private lateinit var network: String
+    private lateinit var redirectScheme: String
 
     private lateinit var preferences: SharedPreferences
 
@@ -25,6 +33,9 @@ object GlipWallet {
 
     private const val BASE_URL = "https://glip.gg/wallet-android/"
     private const val WALLET_HOST_URL = "https://glip.gg/wallet-host/"
+
+    private const val REDIRECT_SCHEME = "redirect_scheme"
+    private const val METADATA_KEY_REDIRECT_SCHEME = "glip.gg.wallet.redirect.scheme"
 
     interface WalletConnectedListener {
         fun onWalletConnected(walletId: String, userInfo: WalletUserInfo?)
@@ -49,6 +60,16 @@ object GlipWallet {
         this.clientId = clientId
         this.chain = chain.name.lowercase()
         this.network = "cyan"
+        try {
+            val ai: ApplicationInfo = context.packageManager.getApplicationInfo(
+                context.packageName,
+                PackageManager.GET_META_DATA
+            )
+            val bundle = ai.metaData
+            redirectScheme = bundle.getString(METADATA_KEY_REDIRECT_SCHEME) ?: throw IllegalArgumentException()
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Redirect scheme not set. Please configure <meta-data android:name=\"${METADATA_KEY_REDIRECT_SCHEME}\" in your manifest")
+        }
 
         preferences = context.getSharedPreferences("glip.gg.wallet", Context.MODE_PRIVATE)
     }
@@ -138,9 +159,13 @@ object GlipWallet {
     fun getUserInfo() = serializeUserInfo(preferences.getString(PREF_USER_INFO, null))
 
     private fun launchInteraction(context: Context, url: String, callback: ((data: Uri) -> Unit), cancelCallback: () -> Unit) {
+        var uri = Uri.parse(url)
+        if (uri.getQueryParameter(REDIRECT_SCHEME).isNullOrEmpty()) {
+            uri = uri.buildUpon().appendQueryParameter(REDIRECT_SCHEME, redirectScheme).build()
+        }
         WalletInteractionActivity.launch(
             context,
-            url,
+            uri.toString(),
             object : WalletInteractionActivity.WalletActionCallback {
                 override fun onWalletActionComplete(data: Uri) {
                     callback(data)

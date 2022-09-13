@@ -1,5 +1,5 @@
 
-const deeplinkHost = 'glipwallet://'
+var redirectScheme = 'glipwallet://'
 
 checkWalletAction()
 
@@ -8,7 +8,8 @@ async function checkWalletAction() {
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
       });
-    
+
+    redirectScheme = params.redirect_scheme
     let action = params.action;
     
     console.log('wallet action', action)
@@ -80,27 +81,27 @@ function showWalletUI() {
 }
 
 function onWalletLogin(walletId, userInfo) {
-    let deeplink = deeplinkHost + `walletConnected?walletId=${walletId}&userInfo=${userInfo}`
+    let deeplink = redirectScheme + `walletConnected?walletId=${walletId}&userInfo=${userInfo}`
     console.log('wallet connected: opening deeplink', deeplink)
     window.location = deeplink
 }   
 
 function onWalletLogout() {
-    let deeplink = deeplinkHost + `loggedOut`
+    let deeplink = redirectScheme + `loggedOut`
     console.log('wallet logged out: opening deeplink', deeplink)
     window.location = deeplink
 } 
 
 function onSignTx(signedTx) {
      // base64 encoded signed tx
-     let deeplink = deeplinkHost + `walletTxSigned?signedTx=${signedTx}`
+     let deeplink = redirectScheme + `walletTxSigned?signedTx=${signedTx}`
      console.log('wallet signed tx: opening deeplink', deeplink)
      window.location = deeplink
 }
 
 function onSignMessage(signedMessage) {
     // base64 encoded signed message
-    let deeplink = deeplinkHost + `walletMessageSigned?signedMessage=${signedMessage}`
+    let deeplink = redirectScheme + `walletMessageSigned?signedMessage=${signedMessage}`
     console.log('wallet signed message: opening deeplink', deeplink)
     window.location = deeplink
 }
