@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.edit
 
 class WalletInteractionActivity : AppCompatActivity() {
 
@@ -67,6 +68,9 @@ class WalletInteractionActivity : AppCompatActivity() {
         Log.d(TAG, "Host: $host")
 
         if (WALLET_ACTION_CALLBACKS.contains(host)) {
+            if (host == "loggedOut") {
+               internalLogout()
+            }
             actionCallback?.onWalletActionComplete(uri)
             return
         }
@@ -99,6 +103,13 @@ class WalletInteractionActivity : AppCompatActivity() {
             Log.d(TAG, "canceled, finishing interaction")
             actionCallback?.onWalletActionCancelled()
             finish()
+        }
+    }
+
+    private fun internalLogout() {
+        getSharedPreferences("glip.gg.wallet", Context.MODE_PRIVATE).edit {
+            putBoolean("glip_wallet_connected", false)
+            putString("glip_wallet_user_info", null)
         }
     }
 }
