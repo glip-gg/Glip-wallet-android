@@ -69,6 +69,7 @@ async function walletSignTx(clientId, chainId, network, txData) {
         authNetwork: network
       }
     );
+    console.log('gggggggg');
     let signer = await window.glipWalletSDK?.getSigner();
     console.log(await signer?.signTransaction(txData));
     //onSignTx(btoa('Placeholder, signed transaction data will be here when implemented'))
