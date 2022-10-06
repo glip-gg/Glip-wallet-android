@@ -24,7 +24,7 @@ async function checkWalletAction() {
         case 'signTx':
             // decode base64
             //walletSignTx(atob(params.txData))
-            walletSignTx(params.clientId, params.chain, params.network, params.txData)
+            walletSignTx(params.clientId, params.chainId, params.network, params.txData)
             break;
         case 'signMessage':
             // decode base64
