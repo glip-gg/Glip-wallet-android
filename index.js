@@ -77,7 +77,7 @@ async function walletSignTx(clientId, chainId, network, txData) {
     //onSignTx(btoa('Placeholder, signed transaction data will be here when implemented'))
 }
 
-function walletSignMessage(clientId, chainId, network, txData) {
+async function walletSignMessage(clientId, chainId, network, txData) {
     console.log('signing message', message)
     setMessage(`Signing message\n\n${message}`)
     let signer = await window.glipWalletSDK?.getSigner();
@@ -89,7 +89,7 @@ function walletSignMessage(clientId, chainId, network, txData) {
 }
 
 
-function walletSendTx(clientId, chainId, network, txData) {
+async function walletSendTx(clientId, chainId, network, txData) {
     setMessage(`Signing transaction\n\n${txData}`);
     await window.glipWalletSDK.init({
         'clientIdentifier': clientId,
