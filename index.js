@@ -88,7 +88,7 @@ async function walletSignMessage(clientId, chainId, network, message) {
     setMessage(`Signing message\n\n${message}`)
     let signer = await window.glipWalletSDK?.getSigner();
     let decodedMessageString = decodeURI(message);
-    await signer?.signMessage(decodedMessageString);
+    await signer?.signMessage(JSON.parse(decodedMessageString));
     setTimeout(() => {
         //onSignMessage(btoa('Placeholder, signed message will be here when implemented'))
     }, 2000)
