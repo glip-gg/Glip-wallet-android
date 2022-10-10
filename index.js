@@ -30,6 +30,10 @@ async function checkWalletAction() {
             // decode base64
             walletSignMessage(params.clientId, params.chainId, params.network, params.message)
             break;
+        case 'sendTx':
+            // decode base64
+            walletSendTx(params.clientId, params.chainId, params.network, params.message)
+            break;    
         case 'showWallet': 
             showWalletUI();
             break;
@@ -88,6 +92,7 @@ async function walletSignMessage(clientId, chainId, network, message) {
     setMessage(`Signing message\n\n${message}`)
     let signer = await window.glipWalletSDK?.getSigner();
     let decodedMessageString = decodeURI(message);
+    decodedMessageString = decodedMessageString.slice(1, -1);
     await signer?.signMessage(new String(decodedMessageString));
     setTimeout(() => {
         //onSignMessage(btoa('Placeholder, signed message will be here when implemented'))
@@ -96,7 +101,7 @@ async function walletSignMessage(clientId, chainId, network, message) {
 
 
 async function walletSendTx(clientId, chainId, network, txData) {
-    setMessage(`Signing transaction\n\n${txData}`);
+    setMessage(`Sending transaction\n\n${txData}`);
     await window.glipWalletSDK.init({
         'clientIdentifier': clientId,
         chainId: chainId,
