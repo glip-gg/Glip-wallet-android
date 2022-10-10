@@ -106,12 +106,9 @@ async function walletSendTx(clientId, chainId, network, txData) {
         'clientIdentifier': clientId,
         chainId: chainId,
         authNetwork: network
-      }
-    );
-    console.log('gggggggg');
+    });
     let signer = await window.glipWalletSDK?.getSigner();
-    let decodedTransactionString = decodeURI(
-        txData);
+    let decodedTransactionString = decodeURI(txData);
     console.log('decodedTransactionString', decodedTransactionString);
     console.log(await signer?.sendTransaction(JSON.parse(decodedTransactionString)));
     //onSignTx(btoa('Placeholder, signed transaction data will be here when implemented'))
