@@ -72,18 +72,39 @@ async function walletSignTx(clientId, chainId, network, txData) {
     console.log('gggggggg');
     let signer = await window.glipWalletSDK?.getSigner();
     let decodedTransactionString = decodeURI(
-        transactionMsg);
+        txData);
     console.log(await signer?.signTransaction(JSON.parse(decodedTransactionString)));
     //onSignTx(btoa('Placeholder, signed transaction data will be here when implemented'))
 }
 
-function walletSignMessage(message) {
+function walletSignMessage(clientId, chainId, network, txData) {
     console.log('signing message', message)
     setMessage(`Signing message\n\n${message}`)
+    let signer = await window.glipWalletSDK?.getSigner();
+    let decodedMessageString = decodeURI(txData);
+    await signer?.signMessage(decodedMessageString);
     setTimeout(() => {
-        onSignMessage(btoa('Placeholder, signed message will be here when implemented'))
+        //onSignMessage(btoa('Placeholder, signed message will be here when implemented'))
     }, 2000)
 }
+
+
+function walletSendTx(clientId, chainId, network, txData) {
+    setMessage(`Signing transaction\n\n${txData}`);
+    await window.glipWalletSDK.init({
+        'clientIdentifier': clientId,
+        chainId: chainId,
+        authNetwork: network
+      }
+    );
+    console.log('gggggggg');
+    let signer = await window.glipWalletSDK?.getSigner();
+    let decodedTransactionString = decodeURI(
+        txData);
+    console.log(await signer?.sendTransaction(JSON.parse(decodedTransactionString)));
+    //onSignTx(btoa('Placeholder, signed transaction data will be here when implemented'))
+}
+
 
 function showWalletUI() {
     window.location.replace('https://glip.gg/wallet-host')
