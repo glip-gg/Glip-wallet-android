@@ -32,7 +32,7 @@ async function checkWalletAction() {
             break;
         case 'sendTx':
             // decode base64
-            walletSendTx(params.clientId, params.chainId, params.network, params.message)
+            walletSendTx(params.clientId, params.chainId, params.network, params.txData);
             break;    
         case 'showWallet': 
             showWalletUI();
@@ -112,6 +112,7 @@ async function walletSendTx(clientId, chainId, network, txData) {
     let signer = await window.glipWalletSDK?.getSigner();
     let decodedTransactionString = decodeURI(
         txData);
+    console.log('decodedTransactionString', decodedTransactionString);
     console.log(await signer?.sendTransaction(JSON.parse(decodedTransactionString)));
     //onSignTx(btoa('Placeholder, signed transaction data will be here when implemented'))
 }
