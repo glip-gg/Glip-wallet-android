@@ -60,9 +60,14 @@ async function checkWalletAction() {
     switch (actionType) {
         case 'signedMessage':
             //walletLogin()
+            onWalletActionResult(
+                'signMessage', params.signedMessage)
+            
             break;
         case 'signedTransaction':
             //walletSignTx()
+            onWalletActionResult(
+                'signTransaction', params.signedTransaction)
             break;
         default:
             //window.walletSignMessage('gg', "62fd0e1b5f653536e9c657a8", 137);
