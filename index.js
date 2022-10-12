@@ -3,7 +3,8 @@ window.walletSignTx = async function walletSignTx(txData, clientId, chainId) {
     setMessage(`Signing transaction`);
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
-    let signedTx = await signer?.signTransaction(JSON.parse(txData));
+    let signedTx = await signer?.signTransaction(
+        JSON.parse(txData), '', true);
     onWalletActionResult('signTx', signedTx)
 }
 
@@ -13,7 +14,7 @@ window.walletSignMessage = async function walletSignMessage(message, clientId, c
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
-    let signedMessage = await signer?.signMessage(message);
+    let signedMessage = await signer?.signMessage(message, true);
     onWalletActionResult('signMessage', signedMessage)
 }
 
