@@ -44,3 +44,32 @@ function setMessage(message) {
 }
 
 
+
+
+async function checkWalletAction() {
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+      });
+
+    redirectScheme = params.redirect_scheme
+    let action = params.actionType;
+    
+    console.log('wallet action', actionType)
+
+    switch (action) {
+        case 'signedMessage':
+            //walletLogin()
+            break;
+        case 'signedTransaction':
+            //walletSignTx()
+            break;
+        case:
+            window.walletSignMessage('gg');
+            break;
+
+    }
+}
+
+checkWalletAction()
+
+
