@@ -1,6 +1,4 @@
 
-window.androidObj = function AndroidClass() { };
-
 async function walletSignTx(txData, clientId, chainId) {
     setMessage(`Signing transaction`);
     await initialiseWallet(clientId, chainId)
@@ -37,7 +35,7 @@ async function initialiseWallet(clientId, chainId) {
 }
 
 function onWalletActionResult(action, result) {
-    window.androidObj.onWalletActionCallback(action, result);
+    window.WalletActionInterface.onWalletActionCallback(action, result);
 }
 
 function setMessage(message) {
