@@ -1,5 +1,5 @@
 
-async function walletSignTx(txData, clientId, chainId) {
+window.walletSignTx = async function walletSignTx(txData, clientId, chainId) {
     setMessage(`Signing transaction`);
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
@@ -7,7 +7,8 @@ async function walletSignTx(txData, clientId, chainId) {
     onWalletActionResult('signTx', signedTx)
 }
 
-async function walletSignMessage(message, clientId, chainId) {
+
+window.walletSignMessage = async function walletSignMessage(message, clientId, chainId) {
     console.log('signing message', message)
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
@@ -17,7 +18,7 @@ async function walletSignMessage(message, clientId, chainId) {
 }
 
 
-async function walletSendTx(txData, clientId, chainId) {
+window.walletSendTx = async function walletSendTx(txData, clientId, chainId) {
     setMessage(`Sending transaction`);
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
