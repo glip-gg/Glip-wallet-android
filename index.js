@@ -51,7 +51,7 @@ async function checkWalletAction() {
         get: (searchParams, prop) => searchParams.get(prop),
       });
 
-    redirectScheme = params.redirect_scheme
+    let redirectScheme = params.redirect_scheme
     let action = params.actionType;
     
     console.log('wallet action', actionType)
