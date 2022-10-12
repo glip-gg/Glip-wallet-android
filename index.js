@@ -65,7 +65,7 @@ async function checkWalletAction() {
             //walletSignTx()
             break;
         default:
-            window.walletSignMessage('gg', "62fd0e1b5f653536e9c657a8", 137);
+            //window.walletSignMessage('gg', "62fd0e1b5f653536e9c657a8", 137);
             break;
 
     }
