@@ -19,6 +19,17 @@ window.walletSignMessage = async function walletSignMessage(message, clientId, c
 }
 
 
+
+window.walletSignPersonalMessage = async function walletSignPersonalMessage(message, clientId, chainId) {
+    console.log('signing message', message)
+    setMessage(`Signing message...`)
+    await initialiseWallet(clientId, chainId)
+    let signer = await window.glipWalletSDK?.getSigner();
+    await signer?.signPersonalMessage(message, true);
+    onWalletActionResult('signPersonalMessage', signedMessage)
+}
+
+
 window.walletSendTx = async function walletSendTx(txData, clientId, chainId) {
     setMessage(`Sending transaction`);
     await initialiseWallet(clientId, chainId)
@@ -69,8 +80,14 @@ async function checkWalletAction() {
             onWalletActionResult(
                 'signTransaction', params.signedTransaction)
             break;
+        case 'signedPersonalMessage':
+            //walletSignTx()
+            onWalletActionResult(
+                'signPersonalMessage',
+                params.signedPersonalMessage)
+            break;
         default:
-            //window.walletSignMessage('gg', "62fd0e1b5f653536e9c657a8", 137);
+            window.walletSignPersonalMessage('gg', "62fd0e1b5f653536e9c657a8", 137);
             break;
 
     }
