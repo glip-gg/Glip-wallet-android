@@ -52,11 +52,11 @@ async function checkWalletAction() {
       });
 
     let redirectScheme = params.redirect_scheme
-    let action = params.actionType;
+    let actionType = params.actionType;
     
     console.log('wallet action', actionType)
 
-    switch (action) {
+    switch (actionType) {
         case 'signedMessage':
             //walletLogin()
             break;
