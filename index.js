@@ -63,7 +63,7 @@ async function checkWalletAction() {
         case 'signedTransaction':
             //walletSignTx()
             break;
-        case:
+        default:
             window.walletSignMessage('gg');
             break;
 
