@@ -5,7 +5,7 @@ window.walletSignTx = async function walletSignTx(txData, clientId, chainId) {
     let signer = await window.glipWalletSDK?.getSigner();
     let signedTx = await signer?.signTransaction(
         JSON.parse(txData), '', true);
-    onWalletActionResult('signTx', signedTx)
+    onWalletActionResult(true, 'signTx', signedTx)
 }
 
 
@@ -15,7 +15,7 @@ window.walletSignMessage = async function walletSignMessage(message, clientId, c
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
     let signedMessage = await signer?.signMessage(message, true);
-    onWalletActionResult('signMessage', signedMessage)
+    onWalletActionResult(true, 'signMessage', signedMessage)
 }
 
 
@@ -25,8 +25,8 @@ window.walletSignPersonalMessage = async function walletSignPersonalMessage(mess
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
-    await signer?.signPersonalMessage(message, true);
-    onWalletActionResult('signPersonalMessage', signedMessage)
+    let signedMessage = await signer?.signPersonalMessage(message, true);
+    onWalletActionResult(true, 'signPersonalMessage', signedMessage)
 }
 
 
@@ -35,7 +35,7 @@ window.walletSendTx = async function walletSendTx(txData, clientId, chainId) {
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
     let signedTx = await signer?.sendTransaction(JSON.parse(txData));
-    onWalletActionResult('sendTx', signedTx)
+    onWalletActionResult(true, 'sendTx', signedTx)
 }
 
 async function initialiseWallet(clientId, chainId) {
@@ -47,8 +47,8 @@ async function initialiseWallet(clientId, chainId) {
     );
 }
 
-function onWalletActionResult(action, result) {
-    window.WalletActionInterface.onWalletActionCallback(action, result);
+function onWalletActionResult(success, action, result) {
+    window.WalletActionInterface.onWalletActionCallback(success, action, result);
 }
 
 function setMessage(message) {
@@ -56,38 +56,32 @@ function setMessage(message) {
 }
 
 
-
-
 async function checkWalletAction() {
     const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
       });
 
-    let redirectScheme = params.redirect_scheme
     let actionType = params.actionType;
     
     console.log('wallet action', actionType)
 
     switch (actionType) {
         case 'signedMessage':
-            //walletLogin()
             onWalletActionResult(
-                'signMessage', params.signedMessage)
+                params.signedMessage.length > 0, 'signMessage', params.signedMessage)
             
             break;
         case 'signedTransaction':
-            //walletSignTx()
             onWalletActionResult(
-                'signTransaction', params.signedTransaction)
+                params.signedTransaction.length > 0, 'signTransaction', params.signedTransaction)
             break;
         case 'signedPersonalMessage':
-            //walletSignTx()
             onWalletActionResult(
+                params.signedTransaction.length > 0,
                 'signPersonalMessage',
                 params.signedPersonalMessage)
             break;
         default:
-            window.walletSignPersonalMessage('gg', "62fd0e1b5f653536e9c657a8", 137);
             break;
 
     }
