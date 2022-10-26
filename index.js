@@ -10,14 +10,15 @@ window.walletSignTx = async function walletSignTx(txData, clientId, chainId) {
 
 
 window.walletSignMessage = async function walletSignMessage(message, clientId, chainId) {
-    console.log('signing message', message)
+    let messageToSign = message
+    if(isBase64(message)) {
+        console.log('base64 message', message)
+        messageToSign = atob(message)
+    }
+    console.log('signing message', messageToSign)
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
-    let messageToSign = message
-    if(isBase64(message)) {
-        messageToSign = atob(message)
-    }
     let signedMessage = await signer?.signMessage(messageToSign, true);
     onWalletActionResult(true, 'signMessage', signedMessage)
 }
@@ -25,14 +26,15 @@ window.walletSignMessage = async function walletSignMessage(message, clientId, c
 
 
 window.walletSignPersonalMessage = async function walletSignPersonalMessage(message, clientId, chainId) {
-    console.log('signing message', message)
+    let messageToSign = message
+    if(isBase64(message)) {
+        console.log('base64 message', message)
+        messageToSign = atob(message)
+    }
+    console.log('signing message', messageToSign)
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
-    let messageToSign = message
-    if(isBase64(message)) {
-        messageToSign = atob(message)
-    }
     let signedMessage = await signer?.signPersonalMessage(messageToSign, true);
     onWalletActionResult(true, 'signPersonalMessage', signedMessage)
 }
