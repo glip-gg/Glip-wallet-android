@@ -14,7 +14,11 @@ window.walletSignMessage = async function walletSignMessage(message, clientId, c
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
-    let signedMessage = await signer?.signMessage(message, true);
+    let messageToSign = message
+    if(isBase64(message)) {
+        messageToSign = atob(message)
+    }
+    let signedMessage = await signer?.signMessage(messageToSign, true);
     onWalletActionResult(true, 'signMessage', signedMessage)
 }
 
@@ -25,7 +29,11 @@ window.walletSignPersonalMessage = async function walletSignPersonalMessage(mess
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
-    let signedMessage = await signer?.signPersonalMessage(message, true);
+    let messageToSign = message
+    if(isBase64(message)) {
+        messageToSign = atob(message)
+    }
+    let signedMessage = await signer?.signPersonalMessage(messageToSign, true);
     onWalletActionResult(true, 'signPersonalMessage', signedMessage)
 }
 
@@ -88,5 +96,14 @@ async function checkWalletAction() {
 }
 
 checkWalletAction()
+
+function isBase64(str) {
+    if (str ==='' || str.trim() ===''){ return false; }
+    try {
+        return btoa(atob(str)) == str;
+    } catch (err) {
+        return false;
+    }
+}
 
 
