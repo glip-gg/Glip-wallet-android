@@ -104,7 +104,6 @@ function hasUpperCase(str) {
 }
 
 function isBase64(str) {
-    return false;
     if (str ==='' || str.trim() ===''){ return false; }
     if(!hasUpperCase(str)){return false}
     try {
