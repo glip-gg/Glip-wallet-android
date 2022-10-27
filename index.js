@@ -99,9 +99,14 @@ async function checkWalletAction() {
 
 checkWalletAction()
 
+function hasUpperCase(str) {
+    return str.toLowerCase() != str;
+}
+
 function isBase64(str) {
     return false;
     if (str ==='' || str.trim() ===''){ return false; }
+    if(!hasUpperCase(str)){return false}
     try {
         return btoa(atob(str)) == str;
     } catch (err) {
