@@ -100,6 +100,7 @@ async function checkWalletAction() {
 checkWalletAction()
 
 function isBase64(str) {
+    return false;
     if (str ==='' || str.trim() ===''){ return false; }
     try {
         return btoa(atob(str)) == str;
