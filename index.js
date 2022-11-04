@@ -91,11 +91,11 @@ async function checkWalletAction() {
 
 checkWalletAction()
 
-function getDecodedMessage(messgae) {
+function getDecodedMessage(message) {
     try {
         return atob(message)
     } catch {
-        return messgae
+        return message
     }
 }
 
