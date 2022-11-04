@@ -10,11 +10,7 @@ window.walletSignTx = async function walletSignTx(txData, clientId, chainId) {
 
 
 window.walletSignMessage = async function walletSignMessage(message, clientId, chainId) {
-    let messageToSign = message
-    if(isBase64(message)) {
-        console.log('base64 message', message)
-        messageToSign = atob(message)
-    }
+    let messageToSign = getDecodedMessage(message)
     console.log('signing message', messageToSign)
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
@@ -26,11 +22,7 @@ window.walletSignMessage = async function walletSignMessage(message, clientId, c
 
 
 window.walletSignPersonalMessage = async function walletSignPersonalMessage(message, clientId, chainId) {
-    let messageToSign = message
-    if(isBase64(message)) {
-        console.log('base64 message', message)
-        messageToSign = atob(message)
-    }
+    let messageToSign = getDecodedMessage(message)
     console.log('signing message', messageToSign)
     setMessage(`Signing message...`)
     await initialiseWallet(clientId, chainId)
@@ -99,17 +91,11 @@ async function checkWalletAction() {
 
 checkWalletAction()
 
-function hasUpperCase(str) {
-    return str.toLowerCase() != str;
-}
-
-function isBase64(str) {
-    if (str ==='' || str.trim() ===''){ return false; }
-    if(!hasUpperCase(str)){return false}
+function getDecodedMessage(messgae) {
     try {
-        return btoa(atob(str)) == str;
-    } catch (err) {
-        return false;
+        return atob(message)
+    } catch {
+        return messgae
     }
 }
 
