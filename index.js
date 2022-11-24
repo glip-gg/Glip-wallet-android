@@ -134,8 +134,6 @@ async function checkWalletAction() {
         redirectScheme = params.redirect_scheme + "://"
         console.log('redirect scheme', redirectScheme)
         localStorage.setItem(REDIRECT_SCHEME_KEY, redirectScheme)
-    } else {
-        return
     }
     let action = params.action;
     
