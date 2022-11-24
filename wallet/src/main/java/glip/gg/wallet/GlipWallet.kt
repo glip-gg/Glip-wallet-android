@@ -127,7 +127,7 @@ object GlipWallet {
             if (data.host == "signMessage") {
                 val signedData = data.getQueryParameter("data")
                 if (signedData != null) {
-                    listener.onMessageSigned(signedData.decodeBase64())
+                    listener.onMessageSigned(signedData)
                 }
             }
         }, {
@@ -144,7 +144,7 @@ object GlipWallet {
             if (data.host == "signPersonalMessage") {
                 val signedData = data.getQueryParameter("data")
                 if (signedData != null) {
-                    listener.onMessageSigned(signedData.decodeBase64())
+                    listener.onMessageSigned(signedData)
                 }
             }
         }, {

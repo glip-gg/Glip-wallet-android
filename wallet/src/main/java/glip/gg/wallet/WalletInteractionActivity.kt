@@ -23,8 +23,6 @@ class WalletInteractionActivity : AppCompatActivity() {
 
         private var actionCallback: WalletActionCallback? = null
 
-        private val ACTION_HOST = "glip-gg.github.io"
-
         fun launch(context: Context, url: String, actionCallback: WalletActionCallback) {
             this.actionCallback = actionCallback
             context.startActivity(
@@ -63,8 +61,7 @@ class WalletInteractionActivity : AppCompatActivity() {
             }
             actionCallback?.onWalletActionComplete(uri)
             return
-        }
-        if (host == ACTION_HOST) {
+        } else {
             launchBrowser(this, uri)
             return
         }
