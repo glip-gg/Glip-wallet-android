@@ -21,7 +21,7 @@ object GlipWallet {
     private const val TAG = "GlipWallet"
 
     private lateinit var clientId: String
-    private lateinit var chain: String
+    private var chain: Int = 137
     private lateinit var network: String
     private lateinit var redirectScheme: String
 
@@ -68,9 +68,9 @@ object GlipWallet {
         }
     }
 
-    fun init(context: Context, clientId: String, chain: Chain) {
+    fun init(context: Context, clientId: String, chainId: Int) {
         this.clientId = clientId
-        this.chain = chain.name.lowercase()
+        this.chain = chainId
         this.network = "cyan"
         redirectScheme = getRedirectScheme(context)
         preferences = context.getSharedPreferences("glip.gg.wallet", Context.MODE_PRIVATE)

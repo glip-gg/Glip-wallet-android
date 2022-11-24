@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        GlipWallet.init(this, CLIENT_ID, Chain.POLYGON)
+        GlipWallet.init(this, CLIENT_ID, 137)
 
         binding.btnConnectWallet.setOnClickListener {
             GlipWallet.login(this, Provider.GOOGLE, object : GlipWallet.WalletConnectedListener {
