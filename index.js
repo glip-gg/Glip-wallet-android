@@ -129,7 +129,8 @@ async function checkWalletAction() {
 
     // wallet action triggers
     if (params.redirect_scheme) {
-        redirectScheme = params.redirect_scheme
+        redirectScheme = params.redirect_scheme + "://"
+        console.log('redirect scheme', redirectScheme)
     } else {
         return
     }

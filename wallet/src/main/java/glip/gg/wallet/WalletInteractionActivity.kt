@@ -23,17 +23,7 @@ class WalletInteractionActivity : AppCompatActivity() {
 
         private var actionCallback: WalletActionCallback? = null
 
-        private const val URL = "url"
-
-        private  val WALLET_ACTION_CALLBACKS = arrayOf(
-            "walletConnected",  "loggedOut"
-        )
-
-        private val WALLET_ACTIONS = arrayOf(
-            "login", "signTx", "signMessage", "logout", "showWallet"
-        )
-
-        private val ACTION_HOST = "glip.gg"
+        private val ACTION_HOST = "glip-gg.github.io"
 
         fun launch(context: Context, url: String, actionCallback: WalletActionCallback) {
             this.actionCallback = actionCallback
