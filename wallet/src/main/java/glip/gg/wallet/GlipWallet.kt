@@ -31,7 +31,7 @@ object GlipWallet {
     private const val PREF_WALLET_CONNECTED = "glip_wallet_connected"
     private const val PREF_USER_INFO = "glip_wallet_user_info"
 
-    private const val BASE_URL = "https://glip.gg/wallet-android/"
+    private const val BASE_URL = "https://glip-gg.github.io/Glip-wallet-android/"
     private const val WALLET_HOST_URL = "https://glip.gg/wallet-host/"
 
     private const val REDIRECT_SCHEME = "redirect_scheme"
@@ -56,21 +56,24 @@ object GlipWallet {
         fun onCancelled()
     }
 
-    fun init(context: Context, clientId: String, chain: Chain) {
-        this.clientId = clientId
-        this.chain = chain.name.lowercase()
-        this.network = "cyan"
-        try {
+    fun getRedirectScheme(context: Context): String {
+        return try {
             val ai: ApplicationInfo = context.packageManager.getApplicationInfo(
                 context.packageName,
                 PackageManager.GET_META_DATA
             )
             val bundle = ai.metaData
-            redirectScheme = bundle.getString(METADATA_KEY_REDIRECT_SCHEME) ?: throw IllegalArgumentException()
+            bundle.getString(METADATA_KEY_REDIRECT_SCHEME) ?: throw IllegalArgumentException()
         } catch (e: Exception) {
             throw IllegalArgumentException("Redirect scheme not set. Please configure <meta-data android:name=\"${METADATA_KEY_REDIRECT_SCHEME}\" in your manifest")
         }
+    }
 
+    fun init(context: Context, clientId: String, chain: Chain) {
+        this.clientId = clientId
+        this.chain = chain.name.lowercase()
+        this.network = "cyan"
+        redirectScheme = getRedirectScheme(context)
         preferences = context.getSharedPreferences("glip.gg.wallet", Context.MODE_PRIVATE)
     }
 
@@ -122,8 +125,25 @@ object GlipWallet {
             "${BASE_URL}?action=signMessage&message=${message.encodeBase64()}"
         launchInteraction(context, url, { data ->
             Log.d(TAG, "sign message data received: $data")
-            if (data.host == "walletMessageSigned") {
-                val signedData = data.getQueryParameter("signedMessage")
+            if (data.host == "signMessage") {
+                val signedData = data.getQueryParameter("data")
+                if (signedData != null) {
+                    listener.onMessageSigned(signedData.decodeBase64())
+                }
+            }
+        }, {
+            listener.onCancelled()
+        })
+    }
+
+    fun signPersonalMessage(context: Context, message: String, listener: WalletSignMessageListener) {
+        Log.d(TAG, "sign personal message requested")
+        val url =
+            "${BASE_URL}?action=signPersonalMessage&message=${message.encodeBase64()}"
+        launchInteraction(context, url, { data ->
+            Log.d(TAG, "sign personal message data received: $data")
+            if (data.host == "signPersonalMessage") {
+                val signedData = data.getQueryParameter("data")
                 if (signedData != null) {
                     listener.onMessageSigned(signedData.decodeBase64())
                 }
@@ -136,13 +156,30 @@ object GlipWallet {
     fun signTransaction(context: Context, txData: String, listener: WalletSignTransactionListener) {
         Log.d(TAG, "sign tx requested")
         val url =
-            "${BASE_URL}?action=signTx&txData=${txData.encodeBase64()}"
+            "${BASE_URL}?action=signTx&txData=${txData}"
         launchInteraction(context, url, { data ->
             Log.d(TAG, "sign tx data received: $data")
-            if (data.host == "walletTxSigned") {
-                val signedData = data.getQueryParameter("signedTx")
+            if (data.host == "signTx") {
+                val signedData = data.getQueryParameter("data")
                 if (signedData != null) {
-                    listener.onTransactionSigned(signedData.decodeBase64())
+                    listener.onTransactionSigned(signedData)
+                }
+            }
+        }, {
+            listener.onCancelled()
+        })
+    }
+
+    fun sendTransaction(context: Context, txData: String, listener: WalletSignTransactionListener) {
+        Log.d(TAG, "sign tx requested")
+        val url =
+            "${BASE_URL}?action=sendTx&txData=${txData}"
+        launchInteraction(context, url, { data ->
+            Log.d(TAG, "send tx data received: $data")
+            if (data.host == "sendTx") {
+                val signedData = data.getQueryParameter("data")
+                if (signedData != null) {
+                    listener.onTransactionSigned(signedData)
                 }
             }
         }, {
@@ -207,5 +244,6 @@ object GlipWallet {
             putString(PREF_WALLET_CONNECTED, null)
         }
     }
+
 
 }

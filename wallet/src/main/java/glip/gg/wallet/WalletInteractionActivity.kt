@@ -26,7 +26,7 @@ class WalletInteractionActivity : AppCompatActivity() {
         private const val URL = "url"
 
         private  val WALLET_ACTION_CALLBACKS = arrayOf(
-            "walletConnected", "walletTxSigned", "walletMessageSigned", "loggedOut"
+            "walletConnected",  "loggedOut"
         )
 
         private val WALLET_ACTIONS = arrayOf(
@@ -63,10 +63,11 @@ class WalletInteractionActivity : AppCompatActivity() {
         Log.d(TAG, uri.toString())
 
         val host = uri.host
+        val scheme = uri.scheme
 
         Log.d(TAG, "Host: $host")
 
-        if (WALLET_ACTION_CALLBACKS.contains(host)) {
+        if (scheme == GlipWallet.getRedirectScheme(this)) {
             if (host == "loggedOut") {
                GlipWallet.internalLogout(this)
             }

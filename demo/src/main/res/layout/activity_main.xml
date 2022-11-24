@@ -20,11 +20,18 @@
             android:text="Connect wallet"/>
 
         <Button
-            android:id="@+id/btn_send_tx"
+            android:id="@+id/btn_sign_tx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Sign ERC20 transfer tx"/>
+
+        <Button
+            android:id="@+id/btn_send_tx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Send ERC20 transfer tx"/>
 
         <Button
             android:id="@+id/btn_sign_message"
@@ -32,6 +39,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Sign message"/>
+
+        <Button
+            android:id="@+id/btn_sign_personal_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Sign personal message"/>
 
         <Button
             android:id="@+id/btn_show_wallet"

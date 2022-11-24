@@ -43,6 +43,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnSendTx.setOnClickListener {
             val txToSign = "{'from': '0x0', 'data': '0x0'}"
+            GlipWallet.sendTransaction(this, txToSign, object : GlipWallet.WalletSignTransactionListener {
+                override fun onTransactionSigned(signedTransaction: String) {
+                    binding.tvStatus.text = "sent transaction\n${signedTransaction}"
+                }
+
+                override fun onCancelled() {
+
+                }
+            })
+        }
+
+        binding.btnSignTx.setOnClickListener {
+            val txToSign = "{'from': '0x0', 'data': '0x0'}"
             GlipWallet.signTransaction(this, txToSign, object : GlipWallet.WalletSignTransactionListener {
                 override fun onTransactionSigned(signedTransaction: String) {
                     binding.tvStatus.text = "Signed transaction\n${signedTransaction}"
@@ -59,6 +72,19 @@ class MainActivity : AppCompatActivity() {
             GlipWallet.signMessage(this, txToSign, object : GlipWallet.WalletSignMessageListener {
                 override fun onMessageSigned(signedMessage: String) {
                     binding.tvStatus.text = "Signed message\n${signedMessage}"
+                }
+
+                override fun onCancelled() {
+
+                }
+            })
+        }
+
+        binding.btnSignPersonalMessage.setOnClickListener {
+            val txToSign = "This is a message from Glip wallet android demo. Please sign this message"
+            GlipWallet.signMessage(this, txToSign, object : GlipWallet.WalletSignMessageListener {
+                override fun onMessageSigned(signedMessage: String) {
+                    binding.tvStatus.text = "Signed personal message\n${signedMessage}"
                 }
 
                 override fun onCancelled() {

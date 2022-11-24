@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GlipWalletAndroid">
 
-        <meta-data android:name="glip.gg.wallet.redirect.scheme" android:value="glipwallet" />
+        <meta-data android:name="glip.gg.wallet.redirect.scheme" android:value="glipwalletdemo" />
 
         <activity
             android:name=".MainActivity"
