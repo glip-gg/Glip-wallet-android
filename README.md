@@ -37,16 +37,38 @@ And add following in app level build.gradle
 implementation(name: 'wallet-release', ext: 'aar')
 ```
 
-## Usage
 
-First make sure that you have created a clientId already.
+### SDK Setup
+
+Add redirect scheme meta-data to your application's AndroidManifest.xml
+```xml
+<meta-data android:name="glip.gg.wallet.redirect.scheme" android:value="enter_your_scheme_here" />
+```
+
+Next, add intent filter for a library included activity. Add this in your app's AndroidManifest.xml
+```xml
+ <activity
+            android:launchMode="singleTop"
+            android:name="glip.gg.wallet.WalletInteractionActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="enter_your_scheme_here" />
+            </intent-filter>
+        </activity>
+```
+
+Note that to pur same `scheme` value in both meta-data and intent-filter's android:scheme value. This scheme allows your app to handle wallet interactions uniquely if multiple apps have Glip Wallet SDK integrated.
 
 ### Initialization
+First make sure that you have created a clientId already.
 
 This initialization can be done in your Application class or anywhere else before interacting with any other wallet methods.
 
 ```kotlin
-GlipWallet.init(appContext, CLIENT_ID, Chain.POLYGON, Network.TESTNET)
+GlipWallet.init(appContext, CLIENT_ID, 137)
 ```
 
 ### Login and connnect wallet
