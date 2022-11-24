@@ -12,6 +12,17 @@
         android:theme="@style/Theme.GlipWalletAndroid">
 
         <meta-data android:name="glip.gg.wallet.redirect.scheme" android:value="glipwalletdemo" />
+        <activity
+            android:launchMode="singleTop"
+            android:name="glip.gg.wallet.WalletInteractionActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="glipwalletdemo" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".MainActivity"

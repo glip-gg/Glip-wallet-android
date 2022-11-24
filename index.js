@@ -1,5 +1,7 @@
 
-var redirectScheme = ''
+const REDIRECT_SCHEME_KEY = 'wallet_android_redirect_scheme'
+
+var redirectScheme = localStorage.getItem(REDIRECT_SCHEME_KEY)
 
 window.walletSignTx = async function walletSignTx(txData, clientId, chainId) {
     setMessage(`Signing transaction`);
@@ -131,6 +133,7 @@ async function checkWalletAction() {
     if (params.redirect_scheme) {
         redirectScheme = params.redirect_scheme + "://"
         console.log('redirect scheme', redirectScheme)
+        localStorage.setItem(REDIRECT_SCHEME_KEY, redirectScheme)
     } else {
         return
     }
