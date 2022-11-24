@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnSignPersonalMessage.setOnClickListener {
             val txToSign = "This is a message from Glip wallet android demo. Please sign this message"
-            GlipWallet.signMessage(this, txToSign, object : GlipWallet.WalletSignMessageListener {
+            GlipWallet.signPersonalMessage(this, txToSign, object : GlipWallet.WalletSignMessageListener {
                 override fun onMessageSigned(signedMessage: String) {
                     binding.tvStatus.text = "Signed personal message\n${signedMessage}"
                 }

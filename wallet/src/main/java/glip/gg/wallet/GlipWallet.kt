@@ -16,7 +16,6 @@ import android.content.pm.PackageManager
 import android.content.pm.ApplicationInfo
 import java.lang.IllegalArgumentException
 
-
 object GlipWallet {
 
     private const val TAG = "GlipWallet"
@@ -122,7 +121,7 @@ object GlipWallet {
     fun signMessage(context: Context, message: String, listener: WalletSignMessageListener) {
         Log.d(TAG, "sign message requested")
         val url =
-            "${BASE_URL}?action=signMessage&message=${message.encodeBase64()}"
+            "${BASE_URL}?action=signMessage&message=${message.encodeBase64()}&chain=$chain"
         launchInteraction(context, url, { data ->
             Log.d(TAG, "sign message data received: $data")
             if (data.host == "signMessage") {
@@ -139,7 +138,7 @@ object GlipWallet {
     fun signPersonalMessage(context: Context, message: String, listener: WalletSignMessageListener) {
         Log.d(TAG, "sign personal message requested")
         val url =
-            "${BASE_URL}?action=signPersonalMessage&message=${message.encodeBase64()}"
+            "${BASE_URL}?action=signPersonalMessage&message=${message.encodeBase64()}&chain=$chain"
         launchInteraction(context, url, { data ->
             Log.d(TAG, "sign personal message data received: $data")
             if (data.host == "signPersonalMessage") {
@@ -156,7 +155,7 @@ object GlipWallet {
     fun signTransaction(context: Context, txData: String, listener: WalletSignTransactionListener) {
         Log.d(TAG, "sign tx requested")
         val url =
-            "${BASE_URL}?action=signTx&txData=${txData}"
+            "${BASE_URL}?action=signTx&txData=${txData}&chain=$chain"
         launchInteraction(context, url, { data ->
             Log.d(TAG, "sign tx data received: $data")
             if (data.host == "signTx") {
@@ -173,7 +172,7 @@ object GlipWallet {
     fun sendTransaction(context: Context, txData: String, listener: WalletSignTransactionListener) {
         Log.d(TAG, "sign tx requested")
         val url =
-            "${BASE_URL}?action=sendTx&txData=${txData}"
+            "${BASE_URL}?action=sendTx&txData=${txData}&chain=$chain"
         launchInteraction(context, url, { data ->
             Log.d(TAG, "send tx data received: $data")
             if (data.host == "sendTx") {

@@ -146,16 +146,16 @@ async function checkWalletAction() {
             walletLogout(params.provider)
             break;
         case 'signTx':         
-            walletSignTx(params.txData, params.clientId, params.chainId)
+            walletSignTx(params.txData, params.clientId, params.chain)
             break;
         case 'signMessage':
-            walletSignMessage(params.message, params.clientId, params.chainId)
+            walletSignMessage(params.message, params.clientId, params.chain)
             break;
         case 'signPersonalMessage':
-            walletSignPersonalMessage(params.message, params.clientId, params.chainId)
+            walletSignPersonalMessage(params.message, params.clientId, params.chain)
             break;
         case 'sendTx':
-            walletSendTx(params.txData, params.clientId, params.chainId);
+            walletSendTx(params.txData, params.clientId, params.chain);
             break;    
         case 'showWallet': 
             showWalletUI();
