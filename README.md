@@ -19,7 +19,7 @@ allprojects {
 
 Add wallet sdk dependency in your app level `build.gradle` file
 ```
-implementation 'com.github.glip-gg:Glip-wallet-android:v0.1'
+implementation 'com.github.glip-gg:Glip-wallet-android:v0.2'
 
 ```
 
@@ -138,4 +138,4 @@ GlipWallet.getUserInfo()
 
 ## Wallet sdk usage demo app
 
-`demo` module in this repo contains the sample usage of Glip wallet sdk. Demo can also be downloaded directly from the releases section. https://github.com/glip-gg/Glip-wallet-android/releases/download/v0.1/demo-release.apk
+`demo` module in this repo contains the sample usage of Glip wallet sdk.
