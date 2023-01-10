@@ -67,9 +67,10 @@ async function walletLogin(clientId, chain, network, provider) {
 async function walletLogout(provider) {
     console.log('wallet logout', provider)
     setMessage('Logging out..')
-    await initialiseWallet(clientId, chain)
-    await window.glipWalletSDK.logout(provider)
-    onWalletLogout()
+    setTimeout(() => {
+         await window.glipWalletSDK.logout(provider)
+         onWalletLogout()
+    }, 5000)
 }
 
 function onWalletLogin(walletId, userInfo) {
