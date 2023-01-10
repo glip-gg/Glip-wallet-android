@@ -64,13 +64,12 @@ async function walletLogin(clientId, chain, network, provider) {
     }
 }
 
-async function walletLogout(provider) {
+async function walletLogout(provider, clientId, chainId) {
     console.log('wallet logout', provider)
     setMessage('Logging out..')
-    setTimeout(() => {
-         await window.glipWalletSDK.logout(provider)
-         onWalletLogout()
-    }, 5000)
+    await initialiseWallet(clientId, chainId)
+    await window.glipWalletSDK.logout(provider)
+    onWalletLogout()
 }
 
 function onWalletLogin(walletId, userInfo) {
@@ -148,7 +147,7 @@ async function checkWalletAction() {
             walletLogin(params.clientId, params.chain, params.network, params.provider)
             break;
         case 'logout':
-            walletLogout(params.provider)
+            walletLogout(params.provider, params.clientId, params.chain)
             break;
         case 'signTx':         
             walletSignTx(params.txData, params.clientId, params.chain)
