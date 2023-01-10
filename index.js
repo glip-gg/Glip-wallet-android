@@ -60,7 +60,7 @@ async function walletLogin(clientId, chain, network, provider) {
         let userInfo = await window.glipWalletSDK.getUserInfo();
         onWalletLogin(walletId, JSON.stringify(userInfo))
     } else {
-        window.glipWalletSDK.login(provider, window.location.href, {isMobileSdk: true})
+        window.glipWalletSDK.login(provider, window.location.href, {isMobileSDK: true})
     }
 }
 
