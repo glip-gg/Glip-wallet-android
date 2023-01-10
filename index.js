@@ -118,7 +118,7 @@ async function checkWalletAction() {
             break;
         case 'signedTransaction':
             onWalletActionResult(
-                params.signedTransaction && params.signedTransaction.length > 0, 'signTransaction', params.signedTransaction)
+                params.signedTransaction && params.signedTransaction.length > 0, 'signTx', params.signedTransaction)
             break;
         case 'signedPersonalMessage':
             onWalletActionResult(
