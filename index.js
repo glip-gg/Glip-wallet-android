@@ -4,11 +4,12 @@ const REDIRECT_SCHEME_KEY = 'wallet_android_redirect_scheme'
 var redirectScheme = localStorage.getItem(REDIRECT_SCHEME_KEY)
 
 window.walletSignTx = async function walletSignTx(txData, clientId, chainId) {
+    let txToSign = getDecodedMessage(txData)
     setMessage(`Signing transaction`);
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
     let signedTx = await signer?.signTransaction(
-        JSON.parse(txData), '', true);
+        JSON.parse(txToSign), '', true);
     onWalletActionResult(true, 'signTx', signedTx)
 }
 
@@ -33,10 +34,11 @@ window.walletSignPersonalMessage = async function walletSignPersonalMessage(mess
 }
 
 window.walletSendTx = async function walletSendTx(txData, clientId, chainId) {
+    let txToSend = getDecodedMessage(txData)
     setMessage(`Sending transaction`);
     await initialiseWallet(clientId, chainId)
     let signer = await window.glipWalletSDK?.getSigner();
-    let signedTx = await signer?.sendTransaction(JSON.parse(txData));
+    let signedTx = await signer?.sendTransaction(JSON.parse(txToSend));
     onWalletActionResult(true, 'sendTx', signedTx)
 }
 
